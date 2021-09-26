@@ -1,4 +1,4 @@
-# Fabric Example Mod
+# Minecraft Glory Kill Mod
 
 ## Setup
 

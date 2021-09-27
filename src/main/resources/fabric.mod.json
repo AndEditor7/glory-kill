@@ -9,10 +9,11 @@
     "AndEditor7"
   ],
   "contact": {
-    "sources": "https://github.com/AndEditor7/glory-kill"
+    "sources": "https://github.com/AndEditor7/glory-kill",
+	"issues": "https://github.com/AndEditor7/glory-kill/issues"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/glorykill/icon.png",
 
   "environment": "*",

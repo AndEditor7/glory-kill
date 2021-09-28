@@ -1,8 +1,9 @@
 package com.andedit.glorykill;
 
-import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import net.fabricmc.api.ModInitializer;
 
 public class Main implements ModInitializer {
 	// This logger is used to write text to the console and the log file.

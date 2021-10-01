@@ -20,7 +20,10 @@
   "entrypoints": {
     "main": [
       "com.andedit.glorykill.Main"
-    ]
+    ],
+	"client": [
+	  "com.andedit.glorykill.Main"
+	]
   },
   "mixins": [
     "glorykill.mixins.json"

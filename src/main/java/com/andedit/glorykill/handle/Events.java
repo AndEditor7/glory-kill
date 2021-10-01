@@ -19,7 +19,7 @@ public final class Events {
 				return ActionResult.PASS;
 			}
 			
-			var canKill = Glory.canKill(entity);
+			var canKill = Glory.canKill(player, entity);
 			if (!world.isClient && canKill) {
 				Glory.execute((ServerWorld)world, (ServerPlayerEntity)player, (LivingEntity)entity);
 			}

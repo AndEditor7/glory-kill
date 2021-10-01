@@ -18,7 +18,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.CreeperEntity;
@@ -86,8 +85,7 @@ public final class Glory {
 		}
 		
 		handle.entity.setOnFire(true);
-		var world = client.world;
-		((WorldExt)world).addGlory(handle);
+		((WorldExt)client.world).addGlory(handle);
 	}
 	
 	public static void tick(World world) {
@@ -106,9 +104,25 @@ public final class Glory {
 		}
 	}
 
-	public static boolean canKill(Entity entity) {
+	public static boolean canKill(PlayerEntity player, Entity entity) {
+		// Check if entity is listed in glory kill.
+		if (!ATTACKS.containsKey(entity.getClass())) {
+			return false;
+		}
+		
 		// Check it its a living entity.
-		if (!entity.isLiving()) return false;
+		if (!entity.isLiving() && !player.isInRange(entity, 6)) {
+			return false;
+		}
+		
+		// Check player's status.
+		if (player.hasVehicle() || 
+			player.isSpectator() ||
+			player.isSleeping() ||
+			player.isDead() ||
+			((GloryExt)player).isGlory()) {
+			return false;
+		}
 		
 		// Check entity status.
 		var living = (LivingEntity)entity;
@@ -121,25 +135,11 @@ public final class Glory {
 			return false;
 		}
 		
-		// Check if entity is listed in glory kill.
-		return ATTACKS.containsKey(entity.getClass());
+		return true;
 	}
 
 	public static void execute(ServerWorld world, ServerPlayerEntity player, LivingEntity entity) {
-		// Check if player is in range to entity.
-		if (!player.isInRange(entity, 6)) {
-			return;
-		}
-		
-		// Check player's status.
-		if (player.hasVehicle() || 
-			player.isSpectator() ||
-			player.isSleeping() ||
-			player.isDead() ||
-			player.isDisconnected() ||
-			((GloryExt)player).isGlory()) {
-			return;
-		}
+		if (player.isDisconnected()) return;
 		
 		// Get attack animation.
 		var attack = get(player, entity);

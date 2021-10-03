@@ -24,7 +24,7 @@ public abstract class WorldMixin implements WorldExt, WorldAccess {
 	@Override
 	public void addGlory(GloryHandle handle) {
 		if (handle.canStart(this)) {
-			handle.setTicks();
+			handle.start();
 			gloryList.add(handle);
 		}
 	}

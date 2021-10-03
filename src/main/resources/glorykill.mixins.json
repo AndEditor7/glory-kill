@@ -8,7 +8,9 @@
 	"WorldMixin"
   ],
   "client": [
-    "ExampleMixin"
+    "ExampleMixin",
+	"BipedEntityModelMixin",
+	"AbstractZombieModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

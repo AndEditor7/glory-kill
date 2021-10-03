@@ -3,6 +3,10 @@ package com.andedit.glorykill.handle;
 import com.andedit.glorykill.attack.Attack;
 import com.andedit.glorykill.extansion.GloryExt;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.render.entity.model.AnimalModel;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.WorldAccess;
@@ -36,8 +40,22 @@ public class GloryHandle {
 		return canStart(world) && ((GloryExt)player).isGlory() && ((GloryExt)entity).isGlory();
 	}
 	
-	public void setTicks() {
-		((GloryExt)entity).setGloryTick(attack.ticks);
-		((GloryExt)player).setGloryTick(attack.ticks);
+	public void start() {
+		((GloryExt)entity).setGloryHandle(this);
+		((GloryExt)player).setGloryHandle(this);
+	}
+
+	public void remove() {
+		((GloryExt)entity).setGloryHandle(null);
+		((GloryExt)player).setGloryHandle(null);
+	}
+
+	@Environment(EnvType.CLIENT)
+	public void animate(AnimalModel<?> model, LivingEntity living, float limbAngle, float limbDist, float progress) {
+		if (living == player) {
+			attack.animateAttacker((BipedEntityModel<?>)model, player, limbAngle, limbDist, progress);
+		} else if (living == entity) {
+			attack.animateVictim((BipedEntityModel<?>)model, entity, limbAngle, limbDist, progress);
+		}
 	}
 }

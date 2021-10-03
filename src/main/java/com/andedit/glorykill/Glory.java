@@ -20,7 +20,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,7 +35,6 @@ public final class Glory {
 	
 	public static void ints() {
 		put(ZombieEntity.class,   new Attack());
-		put(CreeperEntity.class,  new Attack());
 		put(SkeletonEntity.class, new Attack());
 	}
 	
@@ -84,7 +82,6 @@ public final class Glory {
 			return;
 		}
 		
-		handle.entity.setOnFire(true);
 		((WorldExt)client.world).addGlory(handle);
 	}
 	
@@ -96,7 +93,7 @@ public final class Glory {
 			var handle = list.get(i);
 			if (!handle.canContinue(world)) {
 				list.remove(i--);
-				if (world.isClient) handle.entity.setOnFire(false);
+				handle.remove();
 				continue;
 			}
 			
@@ -111,7 +108,7 @@ public final class Glory {
 		}
 		
 		// Check it its a living entity.
-		if (!entity.isLiving() && !player.isInRange(entity, 6)) {
+		if (!player.isInRange(entity, 6)) {
 			return false;
 		}
 		

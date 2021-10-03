@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.andedit.glorykill.extansion.GloryExt;
+import com.andedit.glorykill.handle.GloryHandle;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -21,6 +22,7 @@ abstract class LivingEntityMixin extends Entity implements GloryExt {
 	private static final TrackedData<Boolean> GLORY_KILL = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	
 	private int gloryTicks;
+	private GloryHandle gloryHandle;
 	
 	LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
@@ -34,6 +36,17 @@ abstract class LivingEntityMixin extends Entity implements GloryExt {
 	@Override
 	public void setGloryTick(int tick) {
 		gloryTicks = tick;
+	}
+	
+	public void setGloryHandle(GloryHandle gloryHandle) {
+		this.gloryHandle = gloryHandle;
+		if (gloryHandle != null) {
+			gloryTicks = gloryHandle.attack.ticks;
+		}
+	}
+	
+	public GloryHandle getGloryHandle() {
+		return gloryHandle;
 	}
 	
 	@Override
